@@ -1,0 +1,23 @@
+#startpage{
+    width: 400px;
+    height: 600px;
+    border: 1px solid black;
+}
+
+#level{
+    display:inline;
+}
+
+form{
+    display:inline;
+}
+
+#infobar{
+	height:30px;
+	width:400px;
+	border:1px solid black;
+}
+
+#timer{
+	display:inline;
+}
