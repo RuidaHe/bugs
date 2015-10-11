@@ -2,7 +2,8 @@
 
 function startgame(){
 	time = 60;
-	
+	frame = 0;
+	state = true;
 	startpage = document.getElementById("startpage");
 	startpage.style.display = "none";
 	
@@ -16,9 +17,11 @@ function startgame(){
 	infobar.appendChild(timer);
 	
 	pause = document.createElement("button");
-	pause.innerHTML = "play";
+	pause.innerHTML = "pause";
 	pause.id = "pause";
+	pause.onclick = function() {gamePlayPause()};
 	infobar.appendChild(pause);
+
 	
 	score = document.createElement("div");
 	score.innerHTML = "Score: 0";
@@ -29,28 +32,44 @@ function startgame(){
 	viewport.id = "viewport";
 	document.body.appendChild(viewport);
 
-	 times = setInterval(updateTime, 20);
+	times = setInterval(updateTime, 20);
 	
 	
 }
 
 function updateTime(){
-	if(time>0){
-		time--;
+	frame++;
+	if(frame%10 == 0 && time>0){
+		time--; 
 		timer.innerHTML = time + "sec";
 	}
 	else{
-		if(confirm ("Try again!")){			
-			time=60;
-		}
-		else {
+		if(time <= 0){			
 			time=60;
 			clearInterval(times);
-			infobar.style.display = "none";
-			viewport.style.display = "none";
-			startpage.style.display = "block";
-
+			r = confirm("Try again!");
+			if (r == true){
+				timer.innerHTML = time + "sec";
+			}
+			else{
+				infobar.style.display = "none";
+				viewport.style.display = "none";
+				startpage.style.display = "block";
+			}			
 		}
-		
+	}
+}
+
+function gamePlayPause(){
+	if (state == true){
+		state = false;
+		pause.innerHTML = "play";
+		clearInterval(times);
+	}
+	else if(state == false){
+		state = true;
+		pause.innerHTML = "pause";
+		times = setInterval(updateTime, 20);
+
 	}
 }
