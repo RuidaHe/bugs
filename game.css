@@ -20,3 +20,19 @@ form{
 #timer{
 	display:inline;
 }
+
+#pause{
+	display: inline;
+}
+
+#score{
+	display: inline;
+
+}
+
+
+#viewport{
+	height: 600px;
+	width: 400px;
+	border: 1px solid black;
+}
