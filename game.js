@@ -5,11 +5,11 @@ function startgame(){
 	frame = 0;
 	state = true;
 	foodlist = new Array();
-	foodlist[0] = new food((Math.random()*300), (Math.random()*280));
-	foodlist[1] = new food((Math.random()*300), (Math.random()*280));
-	foodlist[2] = new food((Math.random()*300), (Math.random()*280));
-	foodlist[3] = new food((Math.random()*300), (Math.random()*280));
-	foodlist[4] = new food((Math.random()*300), (Math.random()*280));
+	foodlist[0] = new food((20+Math.random()*360), (300+Math.random()*280));
+	foodlist[1] = new food((20+Math.random()*360), (300+Math.random()*280));
+	foodlist[2] = new food((20+Math.random()*360), (300+Math.random()*280));
+	foodlist[3] = new food((20+Math.random()*360), (300+Math.random()*280));
+	foodlist[4] = new food((20+Math.random()*360), (300+Math.random()*280));
 
 	startpage = document.getElementById("startpage");
 	startpage.style.display = "none";
@@ -35,12 +35,17 @@ function startgame(){
 	score.id = "score";
 	infobar.appendChild(score);
 
-	viewport = document.createElement("canvas");
-	viewport.id = "viewport";
-	ctx = viewport.getContext("2d");
-	document.body.appendChild(viewport);
+	canvas = document.createElement("canvas");
+	canvas.width = "400";
+	canvas.height = "600";
+	canvas.id = "canvas";
+	ctx = canvas.getContext("2d");
+	document.body.appendChild(canvas);
 
-	
+	drawFood();
+	ctx.moveTo(0,0);
+	ctx.lineTo(200,100);
+	ctx.stroke();
 	times = setInterval(updateTime, 20);
 	
 	
@@ -55,7 +60,7 @@ function startgame(){
 // }
 
 function updateTime(){
-	drawFood();
+	
 	frame++;
 	if(frame%10 == 0 && time>0){
 		time--; 
@@ -71,7 +76,7 @@ function updateTime(){
 			}
 			else{
 				infobar.style.display = "none";
-				viewport.style.display = "none";
+				canvas.style.display = "none";
 				startpage.style.display = "block";
 			}			
 		}
@@ -99,13 +104,10 @@ function food(x, y){
 
 function drawFood(){
 	var foodImg = new Image();
-	foodImg.src = "http://pngimg.com/upload/apple_PNG4731.png";
+	foodImg.src = 'orange.png';
 	var i = 0;
-	alert("a");
 	while(foodlist[i]){
-			alert("a");
-
-		ctx.drawImage(foodImg, foodlist[i].x, foodlist[i].y, 10, 10);
+		ctx.drawImage(foodImg, foodlist[i].x, foodlist[i].y, 20, 20);
 		i++;
 	}
 }

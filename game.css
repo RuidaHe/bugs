@@ -35,9 +35,11 @@ form{
 }
 
 
-#viewport{
-	height: 600px;
-	width: 400px;
+#canvas{
+	
 	border: 1px solid black;
 }
 
+#orange{
+	display: none;
+}
