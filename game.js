@@ -10,6 +10,8 @@ function startgame(){
 	foodlist[3] = new food((20+Math.random()*360), (300+Math.random()*280));
 	foodlist[4] = new food((20+Math.random()*360), (300+Math.random()*280));
 
+	buglist = [];
+
 	startpage = document.getElementById("startpage");
 	startpage.style.display = "none";
 	
@@ -42,14 +44,14 @@ function startgame(){
 	document.body.appendChild(canvas);
 
 	drawFood();
-	drawBugs();
+	
 	times = setInterval(updateTime, 20);
 }
 
 function updateTime(){
 	
 	frame++;
-	if(frame%10 == 0 && time>0){
+	if(frame%50 == 0 && time>0){
 		time--; 
 		timer.innerHTML = time + "sec";
 	}
@@ -68,6 +70,12 @@ function updateTime(){
 			}			
 		}
 	}
+
+	if (frame % (50 * (Math.floor(Math.random()*3) + 1)) == 0){
+		buglist.push(new Bug());
+	}
+
+	drawBugs();
 }
 
 function gamePlayPause(){
@@ -103,7 +111,7 @@ function Bug(){
 
 	var speciesNum = Math.floor(Math.random()*10) + 1;
 	this.x = Math.floor(Math.random() * 381) + 10;
-	this.y = 10;
+	this.y = 0;
 	if (speciesNum <= 3){
 		this.species = "black";
 		this.speed1 = 150;
@@ -131,12 +139,12 @@ function Bug(){
 
 function drawBugs(){
 
-	var bug = new Bug();
-	var bugImg = new Image();
-	bugImg.src = bug.imgurl;
-	var i = 1;
-	while(i<=3){
-		ctx.drawImage(bugImg, bug.x, bug.y, 20, 20);
+	
+	var i = 0;
+	while(buglist[i]){		
+		var bugImg = new Image();
+		bugImg.src = buglist[i].imgurl;
+		ctx.drawImage(bugImg, buglist[i].x, buglist[i].y, 20, 20);
 		i++;
 	}
 }
