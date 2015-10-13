@@ -1,9 +1,8 @@
-
-
 function startgame(){
 	time = 60;
 	frame = 0;
 	state = true;
+
 	foodlist = new Array();
 	foodlist[0] = new food((20+Math.random()*360), (300+Math.random()*280));
 	foodlist[1] = new food((20+Math.random()*360), (300+Math.random()*280));
@@ -43,21 +42,9 @@ function startgame(){
 	document.body.appendChild(canvas);
 
 	drawFood();
-	ctx.moveTo(0,0);
-	ctx.lineTo(200,100);
-	ctx.stroke();
+	drawBugs();
 	times = setInterval(updateTime, 20);
-	
-	
 }
-
-// function showCoords(event) {
-	
-//     var x = event.clientX;
-//     var y = event.clientY;
-//     var coords = "X coords: " + x + ", Y coords: " + y;
-//     alert(coords);
-// }
 
 function updateTime(){
 	
@@ -108,6 +95,48 @@ function drawFood(){
 	var i = 0;
 	while(foodlist[i]){
 		ctx.drawImage(foodImg, foodlist[i].x, foodlist[i].y, 20, 20);
+		i++;
+	}
+}
+
+function Bug(){
+
+	var speciesNum = Math.floor(Math.random()*10) + 1;
+	this.x = Math.floor(Math.random() * 381) + 10;
+	this.y = 10;
+	if (speciesNum <= 3){
+		this.species = "black";
+		this.speed1 = 150;
+		this.speed2 = 200;
+		this.score = 5;
+		this.imgurl = "https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/512/bug.png" 
+	} 
+
+	else if ((speciesNum >= 4)&&(speciesNum <= 6)){
+		this.species = "red";
+		this.speed1 = 75;
+		this.speed2 = 100;
+		this.score = 3;
+		this.imgurl = "http://lifegoo.pluskid.org/wp-content/uploads/2008/05/bug.png"
+	}
+
+	else if (speciesNum >= 7){
+		this.species = "orange";
+		this.speed1 = 60;
+		this.speed2 = 80;
+		this.score = 1;
+		this.imgurl = "http://icons.iconarchive.com/icons/umut-pulat/tulliana-2/128/bug-icon.png"
+	}
+}
+
+function drawBugs(){
+
+	var bug = new Bug();
+	var bugImg = new Image();
+	bugImg.src = bug.imgurl;
+	var i = 1;
+	while(i<=3){
+		ctx.drawImage(bugImg, bug.x, bug.y, 20, 20);
 		i++;
 	}
 }
