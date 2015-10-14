@@ -112,6 +112,8 @@ function Bug(){
 	var speciesNum = Math.floor(Math.random()*10) + 1;
 	this.x = Math.floor(Math.random() * 381) + 10;
 	this.y = 0;
+	this.direction = direction;
+	this.movement = movement;
 	if (speciesNum <= 3){
 		this.species = "black";
 		this.speed1 = 150;
@@ -135,11 +137,45 @@ function Bug(){
 		this.score = 1;
 		this.imgurl = "http://icons.iconarchive.com/icons/umut-pulat/tulliana-2/128/bug-icon.png"
 	}
+
+	function direction(){
+		var targetindex = 0;
+		var targetdistance = Math.sqrt(400 * 400 + 600 * 600);
+		var fooddistance = [];
+		var theta = 0;
+		var i = 0;
+		while(foodlist[i]){
+			fooddistance[i] = square (this.x - foodlist[i].x, this.y - foodlist[i].y);
+			if (fooddistance[i] < targetdistance){
+				targetdistance = fooddistance[i];
+				targetindex = i;
+			}
+			i++;
+		}
+		this.targetindex = targetindex;
+		if (foodlist[targetindex].y >= this.y){
+			theta = Math.PI + Math.atan((this.x - foodlist[targetindex].x)/(foodlist[targetindex].y - this.y));
+		}
+		else{
+			theta = Math.atan((foodlist[targetindex].x - this.x)/(this.y - foodlist[targetindex].y));
+		}
+		return theta;
+	}
+
+	function movement(){
+		var speed = 0;
+		if (level == 1){
+			speed = this.speed1;
+		}
+		else{
+			speed = this.speed2;
+		}
+		this.x = this.x + speed * 20 / 1000 * Math.sin(this.direction());
+		this.y = this.y - speed * 20 / 1000 * Math.cos(this.direction());
+	}
 }
 
 function drawBugs(){
-
-	
 	var i = 0;
 	while(buglist[i]){		
 		var bugImg = new Image();
@@ -147,4 +183,10 @@ function drawBugs(){
 		ctx.drawImage(bugImg, buglist[i].x, buglist[i].y, 20, 20);
 		i++;
 	}
+}
+
+
+
+function square(x, y){
+	return Math.sqrt(x * x + y * y);
 }
