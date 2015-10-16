@@ -51,6 +51,7 @@ function startgame(){
 }
 
 function updateTime(){
+	canvas.addEventListener("click", killbug);
 	viewportUpdate();
 	frame++;
 	if(frame%50 == 0 && time>0){
@@ -85,6 +86,10 @@ function viewportUpdate(){
 		gameOver();
 	}
 	else{
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		drawFood();
+		drawBugs();
+		
 		  
 	}
 
@@ -126,6 +131,7 @@ function Bug(){
 	this.y = 0;
 	this.direction = direction;
 	this.movement = movement;
+	this.targetindex = 6;
 	if (speciesNum <= 3){
 		this.species = "black";
 		this.speed1 = 150;
@@ -193,10 +199,22 @@ function Bug(){
 
 function drawBugs(){
 	var i = 0;
-	while(buglist[i]){		
+	while(buglist[i]){
+	
+		buglist[i].movement();
+		var targetindex = buglist[i].targetindex;
+		var targetdistance = square(foodlist[targetindex].x - buglist[i].x,foodlist[targetindex].y - buglist[i].y);
+
+		if (targetdistance < 10 ){
+			foodlist.splice(buglist[i].targetindex, 1);
+		}
 		var bugImg = new Image();
 		bugImg.src = buglist[i].imgurl;
-		ctx.drawImage(bugImg, buglist[i].x, buglist[i].y, 20, 20);
+		ctx.translate(buglist[i].x+10,buglist[i].y+10);
+		ctx.rotate(buglist[i].direction());
+		ctx.drawImage(bugImg, 0, 0,20,20);
+		ctx.rotate(-buglist[i].direction());
+		ctx.translate(-(buglist[i].x+10),-(buglist[i].y+10));
 		i++;
 	}
 }
@@ -220,6 +238,7 @@ function killbug(event){
 			buglist.splice(i,1);
 			bugfadelist[length-1].fade();
 		} 
+		
 		i++;
 	}
 }
