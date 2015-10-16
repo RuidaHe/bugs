@@ -2,6 +2,7 @@ function startgame(){
 	time = 60;
 	frame = 0;
 	state = true;
+	gamescore = 0;
 
 	foodlist = new Array();
 	foodlist[0] = new food((20+Math.random()*360), (300+Math.random()*280));
@@ -11,6 +12,7 @@ function startgame(){
 	foodlist[4] = new food((20+Math.random()*360), (300+Math.random()*280));
 
 	buglist = [];
+	bugfadelist = [];
 
 	startpage = document.getElementById("startpage");
 	startpage.style.display = "none";
@@ -49,7 +51,7 @@ function startgame(){
 }
 
 function updateTime(){
-	
+	viewportUpdate();
 	frame++;
 	if(frame%50 == 0 && time>0){
 		time--; 
@@ -76,6 +78,16 @@ function updateTime(){
 	}
 
 	drawBugs();
+}
+
+function viewportUpdate(){
+	if(!foodlist.length){
+		gameOver();
+	}
+	else{
+		  
+	}
+
 }
 
 function gamePlayPause(){
@@ -173,6 +185,10 @@ function Bug(){
 		this.x = this.x + speed * 20 / 1000 * Math.sin(this.direction());
 		this.y = this.y - speed * 20 / 1000 * Math.cos(this.direction());
 	}
+
+	function fade(){
+		this.fadetime = time;
+	}
 }
 
 function drawBugs(){
@@ -185,8 +201,25 @@ function drawBugs(){
 	}
 }
 
-
-
 function square(x, y){
 	return Math.sqrt(x * x + y * y);
+}
+
+function killbug(event){
+	var i = 0;
+
+	while(buglist[i]){
+		var leftborder = canvas.offsetleft;
+		var topborder = canvas.offsettop;
+		var clickdistance = square(buglist[i].x+10 - (event.pageX-leftborder), buglist[i].y+10 - (event.pageY-topborder));
+
+		if (clickdistance<=30){
+			gamescore = gamescore + buglist[i].score;
+			score.innerHTML = "Score:" + gamescore;
+			var length = bugfadelist.push(buglist[i]);
+			buglist.splice(i,1);
+			bugfadelist[length-1].fade();
+		} 
+		i++;
+	}
 }
